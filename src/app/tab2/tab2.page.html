@@ -1,9 +1,32 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab Two
-    </ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            Photo Gallery
+        </ion-title>
+        <!-- <ion-card-subtitle> photos</ion-card-subtitle> -->
+    </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+                <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)">
+                </ion-img>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button (click)="photoService.addNewToGallery()">
+            <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+    <!-- fab placed to the (vertical) center and end -->
+    <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="photoService.photos.length > 0">
+        <ion-fab-button color="danger" (click)="photoService.deleteGallery()">
+            <ion-icon name="trash">Delete All Photos</ion-icon>
+        </ion-fab-button>
+    </ion-fab> -->
+</ion-content>
