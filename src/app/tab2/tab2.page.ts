@@ -1,12 +1,50 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
+import { PhotoService } from "src/app/services/photo.service";
+import { ActionSheetController } from "@ionic/angular";
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  selector: "app-tab2",
+  templateUrl: "tab2.page.html",
+  styleUrls: ["tab2.page.scss"]
 })
 export class Tab2Page {
+  // protected photo: PhotoService;
 
-  constructor() {}
+  constructor(
+    public photoService: PhotoService,
+    public actionSheetController: ActionSheetController
+  ) {}
 
+  // public openCamera(): any {
+  //   return this.photo.addNewToGallery();
+  // }
+
+  ngOnInit() {
+    this.photoService.loadSaved();
+  }
+
+  public async showActionSheet(photo, position) {
+    const actionSheet = await this.actionSheetController.create({
+      header: "Photos",
+      buttons: [
+        {
+          text: "Delete",
+          role: "destructive",
+          icon: "trash",
+          handler: () => {
+            this.photoService.deletePicture(photo, position);
+          }
+        },
+        {
+          text: "Cancel",
+          icon: "close",
+          role: "cancel",
+          handler: () => {
+            // Nothing to do, action sheet is automatically closed
+          }
+        }
+      ]
+    });
+    await actionSheet.present();
+  }
 }
